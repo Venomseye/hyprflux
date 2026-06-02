@@ -1,0 +1,106 @@
+/* ══════════════════════════════════════════════════════════════════════════════
+   HyprFlux — rofi/config.rasi
+   Global Rofi configuration.  Imported by every other .rasi theme file.
+   Do not put colours or layout here — those live in the per-theme files.
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+configuration {
+
+    /* ── Modes available when rofi is launched without -show ───────────────── */
+    modi:                   "drun,run,window,ssh,filebrowser";
+
+    /* ── Font ──────────────────────────────────────────────────────────────── */
+    font:                   "JetBrainsMono Nerd Font 13";
+
+    /* ── Icons ─────────────────────────────────────────────────────────────── */
+    show-icons:             true;
+    icon-theme:             "Papirus-Dark";
+    steal-focus:            false;
+
+    /* ── Terminal (used by ssh mode) ───────────────────────────────────────── */
+    terminal:               "kitty";
+
+    /* ── Matching & sorting ────────────────────────────────────────────────── */
+    matching:               "fuzzy";
+    tokenize:               true;
+    sorting-method:         "fzf";
+    case-sensitive:         false;
+    sort:                   true;
+
+    /* ── Behaviour ─────────────────────────────────────────────────────────── */
+    cycle:                  true;
+    hover-select:           false;
+    auto-select:            false;
+    sidebar-mode:           false;
+    parse-known-hosts:      true;
+    parse-hosts:            true;
+    click-to-exit:          true;
+
+    /* ── drun-specific ─────────────────────────────────────────────────────── */
+    drun-display-format:    "{name}";
+    drun-show-actions:      false;
+    drun-url-launcher:      "xdg-open";
+
+    /* ── window-specific ───────────────────────────────────────────────────── */
+    window-format:          "{w}  ·  {c}  ·  {t}";
+    window-thumbnail:       false;
+
+    /* ── Mode display labels (shown in sidebar-mode) ───────────────────────── */
+    display-drun:           "󰣆  Apps";
+    display-run:            "  Run";
+    display-window:         "󰕰  Windows";
+    display-ssh:            "󰣀  SSH";
+    display-filebrowser:    "  Files";
+    display-combi:          "  All";
+
+    /* ── Combi mode ────────────────────────────────────────────────────────── */
+    combi-modi:             "drun,run";
+    combi-display-format:   "{mode} {text}";
+
+    /* ── Keybindings ───────────────────────────────────────────────────────── */
+    kb-cancel:              "Escape,Super+Space";
+    kb-accept-entry:        "Return,KP_Enter";
+    kb-remove-char-back:    "BackSpace";
+    kb-remove-word-back:    "ctrl+BackSpace";
+    kb-clear-line:          "ctrl+w";
+    kb-move-front:          "ctrl+a";
+    kb-move-end:            "ctrl+e";
+    kb-move-word-back:      "ctrl+Left,Alt+b";
+    kb-move-word-forward:   "ctrl+Right,Alt+f";
+    kb-move-char-back:      "Left,ctrl+b";
+    kb-move-char-forward:   "Right,ctrl+f";
+    kb-row-up:              "Up,ctrl+p";
+    kb-row-down:            "Down,ctrl+n";
+    kb-row-tab:             "";
+    kb-accept-alt:          "shift+Return";
+    kb-delete-entry:        "shift+Delete";
+    kb-page-prev:           "Page_Up";
+    kb-page-next:           "Page_Down";
+    kb-row-first:           "ctrl+Home";
+    kb-row-last:            "ctrl+End";
+    kb-screenshot:          "ctrl+shift+s";
+    kb-toggle-case-sensitivity: "grave,dead_grave";
+    kb-toggle-sort:         "Alt+grave";
+    kb-mode-previous:       "shift+Left,ctrl+Tab";
+    kb-mode-next:           "shift+Right,ctrl+shift+Tab";
+    kb-select-1:            "";
+    kb-select-2:            "";
+    kb-select-3:            "";
+    kb-select-4:            "";
+    kb-select-5:            "";
+    kb-select-6:            "";
+    kb-select-7:            "";
+    kb-select-8:            "";
+    kb-select-9:            "";
+    kb-select-10:           "";
+
+    /* ── History ───────────────────────────────────────────────────────────── */
+    disable-history:        false;
+    max-history-size:       25;
+
+    /* ── File browser mode ─────────────────────────────────────────────────── */
+    filebrowser {
+        directories-first:  true;
+        sorting-method:     "name";
+    }
+}

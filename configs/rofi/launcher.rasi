@@ -1,0 +1,272 @@
+/* ══════════════════════════════════════════════════════════════════════════════
+   HyprFlux — rofi/launcher.rasi
+   Application launcher theme.
+   Usage: rofi -show drun -config ~/.config/rofi/launcher.rasi
+          rofi -show run  -config ~/.config/rofi/launcher.rasi
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+@import "config.rasi"
+
+/* ── Colour palette ─────────────────────────────────────────────────────────── */
+* {
+    /* Core */
+    bg:             #1a1b26;
+    bg-alt:         #24283b;
+    bg-hover:       #2a2e42;
+    bg-active:      rgba(122, 162, 247, 0.15);
+    surface:        rgba(36, 40, 59, 0.98);
+
+    fg:             #c0caf5;
+    fg-dim:         #565f89;
+    fg-sub:         #a9b1d6;
+
+    accent:         #7aa2f7;
+    accent-dim:     rgba(122, 162, 247, 0.20);
+    accent-hover:   rgba(122, 162, 247, 0.35);
+
+    border-col:     rgba(122, 162, 247, 0.25);
+    border-active:  rgba(122, 162, 247, 0.70);
+
+    red:            #f7768e;
+    green:          #9ece6a;
+    yellow:         #e0af68;
+    cyan:           #7dcfff;
+
+    /* Reset all inherited properties */
+    background-color:   transparent;
+    text-color:         @fg;
+    border-color:       @border-col;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   WINDOW
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+window {
+    background-color:   @bg;
+    border:             2px solid @border-col;
+    border-radius:      16px;
+    width:              680px;
+    x-offset:          0;
+    y-offset:          0;
+    location:           center;
+    anchor:             center;
+    padding:            14px;
+
+    /* Rofi doesn't support CSS box-shadow; use border for depth illusion */
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   MAIN BOX (root container)
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+mainbox {
+    background-color:   transparent;
+    children:           [ inputbar, message, listview ];
+    spacing:            10px;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   INPUT BAR (search field)
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+inputbar {
+    background-color:   @bg-alt;
+    border:             1px solid @border-col;
+    border-radius:      10px;
+    padding:            10px 14px;
+    spacing:            8px;
+    children:           [ prompt, textbox-prompt-colon, entry, num-filtered-rows, textbox-num-sep, num-rows, case-indicator ];
+}
+
+/* Search icon / mode label */
+prompt {
+    background-color:   transparent;
+    text-color:         @accent;
+    font:               "JetBrainsMono Nerd Font Bold 14";
+    vertical-align:     0.5;
+}
+
+/* The ":" after the prompt */
+textbox-prompt-colon {
+    background-color:   transparent;
+    text-color:         @fg-dim;
+    expand:             false;
+    str:                " ";
+}
+
+/* The text you type */
+entry {
+    background-color:   transparent;
+    text-color:         @fg;
+    placeholder:        "Search applications…";
+    placeholder-color:  @fg-dim;
+    cursor:             text;
+    cursor-color:       @accent;
+    vertical-align:     0.5;
+}
+
+/* "12/" — result count numerator */
+num-filtered-rows {
+    background-color:   transparent;
+    text-color:         @fg-dim;
+    expand:             false;
+    font:               "JetBrainsMono Nerd Font 10";
+    vertical-align:     0.5;
+}
+
+/* "/" separator */
+textbox-num-sep {
+    background-color:   transparent;
+    text-color:         @fg-dim;
+    expand:             false;
+    str:                "/";
+    font:               "JetBrainsMono Nerd Font 10";
+    vertical-align:     0.5;
+}
+
+/* "/45" — total count */
+num-rows {
+    background-color:   transparent;
+    text-color:         @fg-dim;
+    expand:             false;
+    font:               "JetBrainsMono Nerd Font 10";
+    vertical-align:     0.5;
+}
+
+/* Case-sensitivity indicator */
+case-indicator {
+    background-color:   transparent;
+    text-color:         @fg-dim;
+    expand:             false;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   MESSAGE BOX (shown when there are no results)
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+message {
+    background-color:   transparent;
+    padding:            0;
+    border:             none;
+}
+
+textbox {
+    background-color:   @bg-alt;
+    border:             1px solid @border-col;
+    border-radius:      8px;
+    text-color:         @fg-dim;
+    padding:            8px 12px;
+    font:               "JetBrainsMono Nerd Font Italic 12";
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   LIST VIEW
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+listview {
+    background-color:   transparent;
+    columns:            1;
+    lines:              9;
+    scrollbar:          true;
+    spacing:            4px;
+    cycle:              true;
+    dynamic:            true;
+    layout:             vertical;
+    fixed-height:       false;
+    fixed-columns:      true;
+}
+
+/* ── Scrollbar ────────────────────────────────────────────────────────────── */
+scrollbar {
+    background-color:   @bg-alt;
+    border-radius:      100px;
+    handle-color:       @fg-dim;
+    handle-width:       4px;
+    border:             0px;
+    width:              4px;
+    margin:             0 0 0 6px;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   LIST ELEMENTS (each app entry)
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+element {
+    background-color:   transparent;
+    border:             1px solid transparent;
+    border-radius:      8px;
+    padding:            8px 10px;
+    spacing:            10px;
+    orientation:        horizontal;
+    cursor:             pointer;
+}
+
+element normal.normal {
+    background-color:   transparent;
+    text-color:         @fg;
+}
+
+element normal.urgent {
+    background-color:   rgba(247, 118, 142, 0.10);
+    text-color:         @red;
+    border-color:       rgba(247, 118, 142, 0.30);
+}
+
+element normal.active {
+    background-color:   @bg-active;
+    text-color:         @accent;
+    border-color:       @border-col;
+}
+
+/* Hovered (alternate = even-numbered rows) */
+element alternate.normal {
+    background-color:   transparent;
+    text-color:         @fg;
+}
+
+element alternate.urgent {
+    background-color:   rgba(247, 118, 142, 0.08);
+    text-color:         @red;
+}
+
+element alternate.active {
+    background-color:   @bg-active;
+    text-color:         @accent;
+}
+
+/* Selected / highlighted */
+element selected.normal {
+    background-color:   @bg-active;
+    border-color:       @border-active;
+    text-color:         @accent;
+}
+
+element selected.urgent {
+    background-color:   rgba(247, 118, 142, 0.18);
+    border-color:       @red;
+    text-color:         @red;
+}
+
+element selected.active {
+    background-color:   @accent-hover;
+    border-color:       @border-active;
+    text-color:         @accent;
+}
+
+/* ── App icon ─────────────────────────────────────────────────────────────── */
+element-icon {
+    background-color:   transparent;
+    size:               36px;
+    cursor:             inherit;
+    vertical-align:     0.5;
+}
+
+/* ── App name + description text ──────────────────────────────────────────── */
+element-text {
+    background-color:   transparent;
+    text-color:         inherit;
+    cursor:             inherit;
+    vertical-align:     0.5;
+    highlight:          bold @accent;
+}

@@ -1,0 +1,358 @@
+// ══════════════════════════════════════════════════════════════════════════════
+// HyprFlux — Waybar config.jsonc
+// Status bar layout and module configuration.
+// ══════════════════════════════════════════════════════════════════════════════
+// Reload waybar:  killall waybar && waybar &
+// Inspect output: waybar --log-level debug
+// ══════════════════════════════════════════════════════════════════════════════
+{
+    // ── Bar geometry & behaviour ──────────────────────────────────────────────
+    "layer":    "top",
+    "position": "top",
+    "height":   42,
+    "spacing":  0,
+
+    // Exclusive zone ensures windows don't overlap the bar
+    "exclusive": true,
+
+    // Pass-through clicks on the empty bar area to windows beneath
+    "passthrough": false,
+
+    // ── Module layout ─────────────────────────────────────────────────────────
+    "modules-left": [
+        "custom/launcher",
+        "hyprland/workspaces",
+        "hyprland/window"
+    ],
+
+    "modules-center": [
+        "custom/cava",
+        "clock",
+        "custom/nowplaying"
+    ],
+
+    "modules-right": [
+        "cpu",
+        "memory",
+        "temperature",
+        "custom/separator",
+        "network",
+        "bluetooth",
+        "custom/separator",
+        "pulseaudio",
+        "pulseaudio#microphone",
+        "backlight",
+        "custom/separator",
+        "battery",
+        "custom/separator",
+        "custom/notification",
+        "tray"
+    ],
+
+    // ══════════════════════════════════════════════════════════════════════════
+    // LEFT MODULES
+    // ══════════════════════════════════════════════════════════════════════════
+
+    // ── Custom launcher button ────────────────────────────────────────────────
+    "custom/launcher": {
+        "format":  "󱄅",
+        "tooltip": false,
+        "on-click": "rofi -show drun -config ~/.config/rofi/launcher.rasi"
+    },
+
+    // ── Hyprland workspaces ───────────────────────────────────────────────────
+    "hyprland/workspaces": {
+        "format":               "{icon}",
+        "format-icons": {
+            "1":  "一",
+            "2":  "二",
+            "3":  "三",
+            "4":  "四",
+            "5":  "五",
+            "6":  "六",
+            "7":  "七",
+            "8":  "八",
+            "9":  "九",
+            "10": "十",
+            "urgent":   "󰗖",
+            "active":   "󰮯",
+            "default":  "󰊠"
+        },
+        "sort-by-number":       true,
+        "on-click":             "activate",
+        "on-scroll-up":         "hyprctl dispatch workspace e+1",
+        "on-scroll-down":       "hyprctl dispatch workspace e-1",
+        "all-outputs":          false,
+        "active-only":          false,
+        "show-special":         false,
+        "persistent-workspaces": {
+            "1": [], "2": [], "3": [], "4": [], "5": []
+        }
+    },
+
+    // ── Active window title ───────────────────────────────────────────────────
+    "hyprland/window": {
+        "format":           "  {}",
+        "max-length":       50,
+        "separate-outputs": true,
+        "rewrite": {
+            // Shorten common app names
+            "(.*) — Mozilla Firefox":      "󰈹  Firefox",
+            "(.*) - Chromium":             "  Chromium",
+            "(.*) - Visual Studio Code":   "  Code",
+            "(.*)Thunar":                  "  Files",
+            "(.*)kitty":                   "  Terminal",
+            "(.*)nvim":                    "  Neovim",
+            "(.*)Discord":                 "󰙯  Discord"
+        }
+    },
+
+    // ══════════════════════════════════════════════════════════════════════════
+    // CENTER MODULES
+    // ══════════════════════════════════════════════════════════════════════════
+
+    // ── Clock ─────────────────────────────────────────────────────────────────
+    "clock": {
+        "format":          "  {:%H:%M}",
+        "format-alt":      "󰃭  {:%a, %d %b %Y}",
+        "tooltip-format":  "<span font='JetBrainsMono Nerd Font 10'><tt><small>{calendar}</small></tt></span>",
+        "calendar": {
+            "mode":           "month",
+            "mode-mon-col":   3,
+            "weeks-pos":      "left",
+            "on-scroll":      1,
+            "on-click-right": "mode",
+            "format": {
+                "months":   "<span color='#c0caf5'><b>{}</b></span>",
+                "weeks":    "<span color='#565f89'><b>W{}</b></span>",
+                "weekdays": "<span color='#7aa2f7'><b>{}</b></span>",
+                "days":     "<span color='#a9b1d6'>{}</span>",
+                "today":    "<span color='#f7768e'><b><u>{}</u></b></span>"
+            }
+        },
+        "actions": {
+            "on-click-right":   "mode",
+            "on-scroll-up":     "shift_up",
+            "on-scroll-down":   "shift_down"
+        }
+    },
+
+    // ══════════════════════════════════════════════════════════════════════════
+    // RIGHT MODULES
+    // ══════════════════════════════════════════════════════════════════════════
+
+    // ── CPU ───────────────────────────────────────────────────────────────────
+    "cpu": {
+        "format":           "󰻠  {usage}%",
+        "format-alt":       "󰻠  {avg_frequency}GHz",
+        "interval":         2,
+        "min-length":       6,
+        "tooltip":          true,
+        "tooltip-format":   "CPU Usage: {usage}%\nFreq: {avg_frequency}GHz\nLoad: {load1} {load5} {load15}",
+        "on-click":         "kitty --class btop -e btop",
+        "states": {
+            "warning":  70,
+            "critical": 90
+        }
+    },
+
+    // ── Memory ────────────────────────────────────────────────────────────────
+    "memory": {
+        "format":           "󰍛  {percentage}%",
+        "format-alt":       "󰍛  {used:0.1f}G / {total:0.1f}G",
+        "interval":         5,
+        "min-length":       6,
+        "tooltip":          true,
+        "tooltip-format":   "RAM: {used:0.2f}G / {total:0.2f}G\nSwap: {swapUsed:0.2f}G / {swapTotal:0.2f}G",
+        "on-click":         "kitty --class btop -e btop",
+        "states": {
+            "warning":  70,
+            "critical": 90
+        }
+    },
+
+    // ── Temperature ───────────────────────────────────────────────────────────
+    "temperature": {
+        // Use hwmon-path for your specific sensor, or let Waybar auto-detect
+        // "hwmon-path": "/sys/class/hwmon/hwmon1/temp1_input",
+        "thermal-zone":     2,
+        "format":           "{icon}  {temperatureC}°C",
+        "format-critical":  "󰈸  {temperatureC}°C",
+        "format-icons":     ["󱃃", "󰔏", "󰸁", "󰸂", "󰸃"],
+        "interval":         5,
+        "critical-threshold": 85,
+        "tooltip":          true,
+        "tooltip-format":   "CPU Temperature: {temperatureC}°C / {temperatureF}°F"
+    },
+
+    // ── Network ───────────────────────────────────────────────────────────────
+    "network": {
+        "format-wifi":          "󰤨  {essid}",
+        "format-ethernet":      "󰈀  {ipaddr}",
+        "format-linked":        "󰤫  {ifname} (no IP)",
+        "format-disconnected":  "󰤭  Disconnected",
+        "format-alt":           "󰤨  {bandwidthUpBits} 󰤩  {bandwidthDownBits}",
+        "interval":             5,
+        "min-length":           5,
+        "max-length":           30,
+        "tooltip-format-wifi":  "SSID: {essid}\nIP: {ipaddr}/{cidr}\nSignal: {signalStrength}%\n↑ {bandwidthUpBits}  ↓ {bandwidthDownBits}",
+        "tooltip-format-ethernet": "Interface: {ifname}\nIP: {ipaddr}/{cidr}\n↑ {bandwidthUpBits}  ↓ {bandwidthDownBits}",
+        "tooltip-format-disconnected": "Not connected",
+        "on-click":             "nm-connection-editor",
+        "on-click-right":       "kitty --class nmtui -e nmtui"
+    },
+
+    // ── Bluetooth ─────────────────────────────────────────────────────────────
+    "bluetooth": {
+        "format":           "󰂯",
+        "format-connected": "󰂱  {device_alias}",
+        "format-connected-battery": "󰂱  {device_alias} {device_battery_percentage}%",
+        "format-off":       "󰂲",
+        "format-disabled":  "󰂲",
+        "tooltip-format":        "Bluetooth: {status}\nAdapter: {adapter_alias}",
+        "tooltip-format-connected": "󰂱 {device_alias}\nBattery: {device_battery_percentage}%",
+        "tooltip-format-enumerate-connected": "{device_alias}",
+        "tooltip-format-enumerate-connected-battery": "{device_alias} 🔋{device_battery_percentage}%",
+        "on-click":         "blueman-manager",
+        "on-click-right":   "rfkill toggle bluetooth"
+    },
+
+    // ── Audio output (PipeWire / PulseAudio) ──────────────────────────────────
+    "pulseaudio": {
+        "format":           "{icon}  {volume}%",
+        "format-bluetooth": "󰂱  {volume}%",
+        "format-bluetooth-muted": "󰂲  Muted",
+        "format-muted":     "󰝟  Muted",
+        "format-source":    "󰍬  {volume}%",
+        "format-source-muted": "󰍭  Muted",
+        "format-icons": {
+            "headphone":    "󰋋",
+            "hands-free":   "󰋎",
+            "headset":      "󰋎",
+            "phone":        "󰏲",
+            "portable":     "󰏲",
+            "car":          "󰄋",
+            "default":      ["󰕿", "󰖀", "󰕾"]
+        },
+        "scroll-step":      2,
+        "max-volume":       150,
+        "min-length":       6,
+        "on-click":         "~/.local/share/hyprflux/scripts/volume.sh mute",
+        "on-click-right":   "pavucontrol",
+        "on-scroll-up":     "~/.local/share/hyprflux/scripts/volume.sh up",
+        "on-scroll-down":   "~/.local/share/hyprflux/scripts/volume.sh down",
+        "tooltip-format":   "Volume: {volume}%\nDevice: {desc}",
+        "smooth-scrolling-threshold": 1
+    },
+
+    // ── Microphone ────────────────────────────────────────────────────────────
+    "pulseaudio#microphone": {
+        "format":           "{format_source}",
+        "format-source":    "󰍬  {volume}%",
+        "format-source-muted": "󰍭",
+        "on-click":         "~/.local/share/hyprflux/scripts/volume.sh micmute",
+        "on-click-right":   "pavucontrol",
+        "on-scroll-up":     "pactl set-source-volume @DEFAULT_SOURCE@ +2%",
+        "on-scroll-down":   "pactl set-source-volume @DEFAULT_SOURCE@ -2%",
+        "tooltip-format":   "Microphone: {volume}%",
+        "scroll-step":      2
+    },
+
+    // ── Backlight ─────────────────────────────────────────────────────────────
+    "backlight": {
+        "device":           "intel_backlight",
+        "format":           "{icon}  {percent}%",
+        "format-icons":     ["󰃞", "󰃟", "󰃠"],
+        "min-length":       5,
+        "tooltip":          true,
+        "tooltip-format":   "Brightness: {percent}%",
+        "on-scroll-up":     "~/.local/share/hyprflux/scripts/brightness.sh up",
+        "on-scroll-down":   "~/.local/share/hyprflux/scripts/brightness.sh down",
+        "smooth-scrolling-threshold": 1
+    },
+
+    // ── Battery ───────────────────────────────────────────────────────────────
+    "battery": {
+        "states": {
+            "full":     100,
+            "good":     79,
+            "warning":  40,
+            "critical": 15
+        },
+        "format":               "{icon}  {capacity}%",
+        "format-charging":      "󰂄  {capacity}%",
+        "format-plugged":       "󰚦  {capacity}%",
+        "format-full":          "󰁹  Full",
+        "format-alt":           "{icon}  {time}",
+        "format-time":          "{H}h {M}m",
+        "format-icons":         ["󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"],
+        "interval":             30,
+        "min-length":           6,
+        "tooltip":              true,
+        "tooltip-format":       "Battery: {capacity}%\nStatus: {status}\nTime remaining: {time}\nPower draw: {power}W",
+        "on-click-right":       "kitty --class powertop -e sudo powertop"
+    },
+
+    // ── Notification center toggle (SwayNC) ───────────────────────────────────
+    "custom/notification": {
+        "tooltip":          false,
+        "format":           "{icon}",
+        "format-icons": {
+            "notification": "<span foreground='#f7768e'>󱅫</span>",
+            "none":         "󰂚",
+            "dnd-notification": "<span foreground='#f7768e'>󰂛</span>",
+            "dnd-none":     "󰂛",
+            "inhibited-notification": "<span foreground='#f7768e'>󱅫</span>",
+            "inhibited-none": "󰂚",
+            "dnd-inhibited-notification": "<span foreground='#f7768e'>󰂛</span>",
+            "dnd-inhibited-none": "󰂛"
+        },
+        "return-type":      "json",
+        "exec-if":          "which swaync-client",
+        "exec":             "swaync-client -swb",
+        "on-click":         "swaync-client -t -sw",
+        "on-click-right":   "swaync-client -d -sw",
+        "escape":           true
+    },
+
+    // ── System tray ───────────────────────────────────────────────────────────
+    "tray": {
+        "icon-size":        18,
+        "spacing":          8,
+        "show-passive-items": false,
+        "reverse-direction": false
+    },
+
+    // ── CAVA audio visualizer ─────────────────────────────────────────────────
+    // Long-running script: outputs one JSON line per frame.
+    // Shows block-character bars when playing, ⏸ when paused, empty when stopped.
+    "custom/cava": {
+        "return-type":      "json",
+        "exec":             "~/.local/share/hyprflux/scripts/cava-waybar.sh",
+        "restart-interval": 5,
+        "format":           "{}",
+        "tooltip":          false
+    },
+
+    // ── Now playing ───────────────────────────────────────────────────────────
+    // Long-running script: scrolls text longer than 20 chars at 0.5 s/step.
+    // Shows  ⏸ + static title when paused, empty when stopped/no player.
+    "custom/nowplaying": {
+        "return-type":      "json",
+        "exec":             "~/.local/share/hyprflux/scripts/nowplaying.sh",
+        "restart-interval": 5,
+        "format":           "{}",
+        "max-length":       35,
+        "on-click":         "playerctl play-pause",
+        "on-click-right":   "playerctl next",
+        "on-scroll-up":     "playerctl next",
+        "on-scroll-down":   "playerctl previous",
+        "tooltip":          true
+    },
+
+    // ── Separator ─────────────────────────────────────────────────────────────
+    "custom/separator": {
+        "format":   "|",
+        "tooltip":  false
+    }
+}

@@ -1,0 +1,179 @@
+/* ══════════════════════════════════════════════════════════════════════════════
+   HyprFlux — rofi/powermenu.rasi
+   Power / session menu theme.
+   Usage: rofi -show drun -config ~/.config/rofi/powermenu.rasi
+          (Invoked by scripts/powermenu.sh, not directly)
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+@import "config.rasi"
+
+/* ── Colour palette ─────────────────────────────────────────────────────────── */
+* {
+    bg:             #1a1b26;
+    bg-alt:         #24283b;
+    bg-hover:       #2a2e42;
+
+    fg:             #c0caf5;
+    fg-dim:         #565f89;
+    fg-sub:         #a9b1d6;
+
+    accent:         #7aa2f7;
+    border-col:     rgba(122, 162, 247, 0.25);
+    border-active:  rgba(122, 162, 247, 0.70);
+
+    red:            #f7768e;
+    green:          #9ece6a;
+    yellow:         #e0af68;
+    cyan:           #7dcfff;
+    magenta:        #bb9af7;
+
+    background-color:   transparent;
+    text-color:         @fg;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   WINDOW
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+window {
+    background-color:   @bg;
+    border:             2px solid @border-col;
+    border-radius:      20px;
+    width:              480px;
+    location:           center;
+    anchor:             center;
+    padding:            24px;
+    x-offset:           0;
+    y-offset:           0;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   LAYOUT
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+mainbox {
+    background-color:   transparent;
+    children:           [ inputbar, listview ];
+    spacing:            18px;
+}
+
+/* Header row: a static label acting as the title */
+inputbar {
+    background-color:   transparent;
+    border:             0px;
+    padding:            0px;
+    children:           [ prompt ];
+}
+
+prompt {
+    background-color:   transparent;
+    text-color:         @fg-sub;
+    font:               "JetBrainsMono Nerd Font Bold 13";
+    horizontal-align:   0.5;
+}
+
+/* Hide unused inputbar children */
+entry, textbox-prompt-colon, num-filtered-rows,
+textbox-num-sep, num-rows, case-indicator {
+    enabled:    false;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   LIST — 3 columns of large icon-only buttons
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+listview {
+    background-color:   transparent;
+    columns:            3;
+    lines:              2;
+    scrollbar:          false;
+    spacing:            10px;
+    cycle:              true;
+    dynamic:            false;
+    layout:             vertical;
+    fixed-height:       true;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   ELEMENTS
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+element {
+    background-color:   @bg-alt;
+    border:             1px solid @border-col;
+    border-radius:      14px;
+    padding:            18px 10px 14px 10px;
+    spacing:            0px;
+    orientation:        vertical;
+    cursor:             pointer;
+}
+
+element normal.normal {
+    background-color:   @bg-alt;
+    text-color:         @fg-sub;
+    border-color:       @border-col;
+}
+
+element alternate.normal {
+    background-color:   @bg-alt;
+    text-color:         @fg-sub;
+    border-color:       @border-col;
+}
+
+element selected.normal {
+    background-color:   rgba(122, 162, 247, 0.12);
+    border-color:       @border-active;
+    text-color:         @accent;
+}
+
+/* ── Icon (large Nerd Font glyph set as the entry text) ───────────────────── */
+element-icon {
+    background-color:   transparent;
+    size:               0px;            /* icons are embedded in element-text  */
+}
+
+element-text {
+    background-color:   transparent;
+    text-color:         inherit;
+    horizontal-align:   0.5;
+    vertical-align:     0.5;
+    font:               "JetBrainsMono Nerd Font Bold 13";
+    cursor:             inherit;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   PER-ACTION COLOUR OVERRIDES
+   Applied via the rofi -entry-id approach inside powermenu.sh by passing
+   entries whose text starts with a sentinel matched here via rofi's
+   element-text highlight rule.  The simpler approach used here: colour every
+   element by index using Rofi's urgent/active state flags set in the script.
+   ══════════════════════════════════════════════════════════════════════════════
+
+   powermenu.sh passes:    -urgent 3    (index of "Shutdown" → red)
+                           -active 0    (index of "Lock"    → blue)
+   All other colours are handled by the base selected state above.
+*/
+
+element normal.urgent {
+    background-color:   rgba(247, 118, 142, 0.10);
+    border-color:       rgba(247, 118, 142, 0.35);
+    text-color:         @red;
+}
+
+element selected.urgent {
+    background-color:   rgba(247, 118, 142, 0.20);
+    border-color:       @red;
+    text-color:         @red;
+}
+
+element normal.active {
+    background-color:   rgba(122, 162, 247, 0.10);
+    border-color:       rgba(122, 162, 247, 0.35);
+    text-color:         @accent;
+}
+
+element selected.active {
+    background-color:   rgba(122, 162, 247, 0.22);
+    border-color:       @border-active;
+    text-color:         @accent;
+}

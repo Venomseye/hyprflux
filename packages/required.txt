@@ -1,0 +1,132 @@
+# ══════════════════════════════════════════════════════════════════════
+# HyprFlux — Required Packages
+# ══════════════════════════════════════════════════════════════════════
+# Parsed automatically by install.sh.
+# Format: one package name per line.
+#         Lines starting with # are comments (ignored by installer).
+#         Packages marked with # [AUR] require an AUR helper.
+# ══════════════════════════════════════════════════════════════════════
+
+
+# ── Hyprland compositor & Wayland layer ────────────────────────────
+hyprland
+xdg-desktop-portal-hyprland
+xdg-desktop-portal-gtk
+wayland-protocols
+qt5-wayland
+qt6-wayland
+
+# ── Hyprland companion tools ───────────────────────────────────────
+hyprlock
+hypridle
+hyprpaper
+hyprpicker
+hyprcursor
+
+# ── Status bar ─────────────────────────────────────────────────────
+waybar
+
+# ── Application launcher ───────────────────────────────────────────
+rofi-wayland
+
+# ── Terminal emulator ──────────────────────────────────────────────
+kitty
+
+# ── Shell: Fish ────────────────────────────────────────────────────
+fish
+
+# ── Shell: Zsh ─────────────────────────────────────────────────────
+zsh
+zsh-syntax-highlighting
+zsh-autosuggestions
+zsh-completions
+starship
+
+# ── Notifications ──────────────────────────────────────────────────
+dunst
+libnotify
+
+# ── Screenshot & screen annotation ────────────────────────────────
+grim
+slurp
+swappy
+
+# ── Screen recording ───────────────────────────────────────────────
+wf-recorder
+
+# ── Audio: PipeWire stack ──────────────────────────────────────────
+pipewire
+pipewire-alsa
+pipewire-jack
+pipewire-pulse
+wireplumber
+pavucontrol
+playerctl
+
+# ── Networking ─────────────────────────────────────────────────────
+networkmanager
+network-manager-applet
+
+# ── Bluetooth ──────────────────────────────────────────────────────
+bluez
+bluez-utils
+blueman
+
+# ── Power management & display brightness ──────────────────────────
+brightnessctl
+upower
+
+# ── Clipboard manager ──────────────────────────────────────────────
+wl-clipboard
+cliphist
+
+# ── Authentication agent ───────────────────────────────────────────
+polkit
+polkit-gnome
+
+# ── XDG & desktop integration ──────────────────────────────────────
+xdg-user-dirs
+xdg-utils
+
+# ── System utilities (used by HyprFlux scripts) ────────────────────
+imagemagick
+jq
+bc
+curl
+socat
+python
+cava                      # Audio visualizer (Waybar CAVA module)
+
+# ── System information display ─────────────────────────────────────
+fastfetch
+
+# ── GTK appearance tool ────────────────────────────────────────────
+nwg-look
+
+# ── Qt theming ─────────────────────────────────────────────────────
+qt5ct
+qt6ct
+kvantum
+
+# ── Icon theme ─────────────────────────────────────────────────────
+papirus-icon-theme
+
+# ── Cursor themes ──────────────────────────────────────────────────
+xcursor-themes
+
+# ── Fonts ──────────────────────────────────────────────────────────
+ttf-jetbrains-mono-nerd
+noto-fonts
+noto-fonts-emoji
+ttf-font-awesome
+ttf-nerd-fonts-symbols-mono
+
+
+# ══════════════════════════════════════════════════════════════════════
+# AUR PACKAGES
+# Requires yay or paru. install.sh will bootstrap yay if absent.
+# ══════════════════════════════════════════════════════════════════════
+
+swaynotificationcenter    # [AUR] swaync: notification daemon + center
+wlogout                   # [AUR] graphical session logout / power screen
+bibata-cursor-theme       # [AUR] modern, crisp cursor theme

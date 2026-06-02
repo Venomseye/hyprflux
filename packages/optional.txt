@@ -1,0 +1,69 @@
+# ══════════════════════════════════════════════════════════════════════
+# HyprFlux — Optional Packages
+# ══════════════════════════════════════════════════════════════════════
+# The installer will present these in a checklist and install
+# only those the user selects.
+# Format: one package name per line.
+#         Packages marked with # [AUR] require an AUR helper.
+# ══════════════════════════════════════════════════════════════════════
+
+
+# ── File manager ───────────────────────────────────────────────────
+thunar                    # GTK file manager
+gvfs                      # Virtual filesystem support (USB, MTP, SMB…)
+gvfs-mtp                  # MTP device support (Android phones)
+thunar-archive-plugin     # Right-click archive support in Thunar
+thunar-volman             # Automatic volume/device management in Thunar
+file-roller               # Archive manager GUI
+
+# ── Text editors ───────────────────────────────────────────────────
+neovim                    # Extensible terminal text editor
+code                      # Visual Studio Code (open-source build)
+
+# ── Image viewers ──────────────────────────────────────────────────
+imv                       # Minimal Wayland-native image viewer
+swayimg                   # Feature-rich Wayland image viewer
+
+# ── Video & media players ──────────────────────────────────────────
+mpv                       # Lightweight, scriptable video player
+vlc                       # Feature-complete media player
+
+# ── PDF viewer ─────────────────────────────────────────────────────
+zathura                   # Minimal, keyboard-driven document viewer
+zathura-pdf-mupdf         # MuPDF rendering backend for Zathura
+
+# ── Fonts (extended) ───────────────────────────────────────────────
+noto-fonts-cjk            # Full CJK (Chinese, Japanese, Korean) support
+ttf-liberation            # Liberation metric-compatible fonts
+ttf-fira-code             # Fira Code with programming ligatures
+
+# ── Web browsers ───────────────────────────────────────────────────
+firefox                   # Mozilla Firefox
+chromium                  # Open-source Chromium browser
+
+# ── Office & productivity ──────────────────────────────────────────
+libreoffice-fresh         # LibreOffice (latest stable)
+thunderbird               # Mozilla Thunderbird email client
+
+# ── System monitoring ──────────────────────────────────────────────
+btop                      # Resource monitor with beautiful TUI
+nvtop                     # GPU process monitor (NVIDIA / AMD / Intel)
+
+# ── Development tools ──────────────────────────────────────────────
+git                       # Distributed version control
+github-cli                # GitHub CLI (gh)
+docker                    # Container runtime
+docker-compose            # Docker Compose plugin
+
+# ── Extra fonts from AUR ───────────────────────────────────────────
+ttf-maple-nerd            # [AUR] Maple Mono Nerd Font
+ttf-cascadia-code-nerd    # [AUR] Cascadia Code Nerd Font
+
+# ── Extra cursor themes from AUR ───────────────────────────────────
+catppuccin-cursors        # [AUR] Catppuccin-flavoured cursor set
+
+# ── Animated wallpaper daemon ──────────────────────────────────────
+swww                      # [AUR] Smooth animated wallpaper with transitions
+
+# ── Communication ──────────────────────────────────────────────────
+vesktop                   # [AUR] Discord client with Vencord pre-installed
