@@ -451,6 +451,15 @@ copy_configs() {
     # Hyprland
     install_config "${SCRIPT_DIR}/configs/hypr"          "${HOME}/.config/hypr"
 
+    # Hyprlock (screen locker config — read automatically by hyprlock)
+    install_config "${SCRIPT_DIR}/configs/hypr/hyprlock.conf"  "${HOME}/.config/hypr/hyprlock.conf"
+
+    # Hypridle (idle daemon config — read automatically by hypridle)
+    install_config "${SCRIPT_DIR}/configs/hypr/hypridle.conf"  "${HOME}/.config/hypr/hypridle.conf"
+
+    # Hyprpaper (initial wallpaper config — overwritten by wallpaper.sh)
+    install_config "${SCRIPT_DIR}/configs/hypr/hyprpaper.conf" "${HOME}/.config/hypr/hyprpaper.conf"
+
     # Waybar
     install_config "${SCRIPT_DIR}/configs/waybar"        "${HOME}/.config/waybar"
 
@@ -542,18 +551,26 @@ install_scripts() {
 apply_active_theme() {
     header "Applying Active Theme"
 
+    mkdir -p "${HOME}/.config/hyprflux/themes"
+
+    # Copy all theme files
+    if [[ -d "${SCRIPT_DIR}/themes" ]]; then
+        cp -r "${SCRIPT_DIR}/themes/." "${HOME}/.config/hyprflux/themes/"
+        success "Theme files installed"
+    fi
+
     local active_theme="${HOME}/.config/hyprflux/themes/active.conf"
     local dark_theme="${HOME}/.config/hyprflux/themes/dark.conf"
 
-    if [[ ! -f "${dark_theme}" ]]; then
+    if [[ ! -f "$dark_theme" ]]; then
         warn "Dark theme not found: ${dark_theme}"
         return 0
     fi
 
-    # Create symlink: active.conf → dark.conf (default)
-    ln -sf "${dark_theme}" "${active_theme}"
-    success "Active theme set to: dark"
-    info "Switch themes with: theme-switch"
+    # Create symlink — use -sf so re-runs update it safely
+    ln -sf "$dark_theme" "$active_theme"
+    success "Active theme → dark (Tokyo Night Dark)"
+    info "Switch themes: theme-switch select  or  Super+Shift+T"
 }
 
 # ═══════════════════════════════════════════════════════════════════════════════
@@ -764,6 +781,9 @@ verify_installation() {
     # Critical config files
     verify_file "${HOME}/.config/hypr/hyprland.conf"
     verify_file "${HOME}/.config/hypr/keybinds.conf"
+    verify_file "${HOME}/.config/hypr/hyprlock.conf"
+    verify_file "${HOME}/.config/hypr/hypridle.conf"
+    verify_file "${HOME}/.config/hypr/hyprpaper.conf"
     verify_file "${HOME}/.config/waybar/config.jsonc"
     verify_file "${HOME}/.config/waybar/style.css"
     verify_file "${HOME}/.config/rofi/config.rasi"

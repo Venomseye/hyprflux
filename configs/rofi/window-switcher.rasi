@@ -1,229 +1,179 @@
 /* ══════════════════════════════════════════════════════════════════════════════
    HyprFlux — rofi/window-switcher.rasi
-   Window switcher theme.
-   Usage: rofi -show window -config ~/.config/rofi/window-switcher.rasi
    ══════════════════════════════════════════════════════════════════════════════ */
 
 @import "config.rasi"
 
-/* ── Colour palette ─────────────────────────────────────────────────────────── */
 * {
-    bg:             #1a1b26;
-    bg-alt:         #24283b;
-    bg-hover:       #2a2e42;
-    bg-active:      rgba(122, 162, 247, 0.13);
-
-    fg:             #c0caf5;
-    fg-dim:         #565f89;
-    fg-sub:         #a9b1d6;
-
-    accent:         #7aa2f7;
-    accent-dim:     rgba(122, 162, 247, 0.18);
-    border-col:     rgba(122, 162, 247, 0.22);
-    border-active:  rgba(122, 162, 247, 0.65);
-
-    red:            #f7768e;
-    green:          #9ece6a;
-    yellow:         #e0af68;
-    cyan:           #7dcfff;
-    magenta:        #bb9af7;
-
-    background-color:   transparent;
-    text-color:         @fg;
+    bg:           #1a1b26;
+    bg-alt:       #24283b;
+    bg-active:    rgba(122, 162, 247, 0.13);
+    fg:           #c0caf5;
+    fg-dim:       #565f89;
+    fg-sub:       #a9b1d6;
+    accent:       #7aa2f7;
+    border-col:   rgba(122, 162, 247, 0.22);
+    border-hi:    rgba(122, 162, 247, 0.65);
+    red:          #f7768e;
+    background-color: transparent;
+    text-color:       @fg;
 }
-
-/* ══════════════════════════════════════════════════════════════════════════════
-   WINDOW
-   ══════════════════════════════════════════════════════════════════════════════ */
 
 window {
-    background-color:   @bg;
-    border:             2px solid @border-col;
-    border-radius:      16px;
-    width:              760px;
-    location:           center;
-    anchor:             center;
-    padding:            14px;
-    x-offset:           0;
-    y-offset:           0;
+    background-color: @bg;
+    border:           2px solid @border-col;
+    border-radius:    16px;
+    width:            760px;
+    location:         center;
+    anchor:           center;
+    padding:          14px;
+    x-offset:         0;
+    y-offset:         0;
 }
-
-/* ══════════════════════════════════════════════════════════════════════════════
-   LAYOUT
-   ══════════════════════════════════════════════════════════════════════════════ */
 
 mainbox {
-    background-color:   transparent;
-    children:           [ inputbar, listview ];
-    spacing:            10px;
+    background-color: transparent;
+    children:         [ inputbar, listview ];
+    spacing:          10px;
 }
 
-/* ── Input bar ────────────────────────────────────────────────────────────── */
 inputbar {
-    background-color:   @bg-alt;
-    border:             1px solid @border-col;
-    border-radius:      10px;
-    padding:            10px 14px;
-    spacing:            8px;
-    children:           [ prompt, textbox-prompt-colon, entry, num-filtered-rows, textbox-num-sep, num-rows ];
+    background-color: @bg-alt;
+    border:           1px solid @border-col;
+    border-radius:    10px;
+    padding:          10px 14px;
+    spacing:          8px;
+    children:         [ prompt, textbox-prompt-colon, entry, num-filtered-rows, textbox-num-sep, num-rows ];
 }
 
 prompt {
-    background-color:   transparent;
-    text-color:         @accent;
-    font:               "JetBrainsMono Nerd Font Bold 14";
-    vertical-align:     0.5;
+    background-color: transparent;
+    text-color:       @accent;
+    font:             "JetBrainsMono Nerd Font Bold 14";
+    vertical-align:   0.5;
 }
 
 textbox-prompt-colon {
-    background-color:   transparent;
-    text-color:         @fg-dim;
-    expand:             false;
-    str:                " ";
-    vertical-align:     0.5;
+    background-color: transparent;
+    text-color:       @fg-dim;
+    expand:           false;
+    str:              " ";
+    vertical-align:   0.5;
 }
 
 entry {
-    background-color:   transparent;
-    text-color:         @fg;
-    placeholder:        "Filter windows…";
-    placeholder-color:  @fg-dim;
-    cursor:             text;
-    vertical-align:     0.5;
+    background-color:  transparent;
+    text-color:        @fg;
+    placeholder:       "Filter windows…";
+    placeholder-color: @fg-dim;
+    vertical-align:    0.5;
+    cursor:            text;
 }
 
-num-filtered-rows {
-    background-color:   transparent;
-    text-color:         @fg-dim;
-    expand:             false;
-    font:               "JetBrainsMono Nerd Font 10";
-    vertical-align:     0.5;
+num-filtered-rows, num-rows {
+    background-color: transparent;
+    text-color:       @fg-dim;
+    expand:           false;
+    font:             "JetBrainsMono Nerd Font 10";
+    vertical-align:   0.5;
 }
 
 textbox-num-sep {
-    background-color:   transparent;
-    text-color:         @fg-dim;
-    expand:             false;
-    str:                "/";
-    font:               "JetBrainsMono Nerd Font 10";
-    vertical-align:     0.5;
-}
-
-num-rows {
-    background-color:   transparent;
-    text-color:         @fg-dim;
-    expand:             false;
-    font:               "JetBrainsMono Nerd Font 10";
-    vertical-align:     0.5;
+    background-color: transparent;
+    text-color:       @fg-dim;
+    expand:           false;
+    str:              "/";
+    font:             "JetBrainsMono Nerd Font 10";
+    vertical-align:   0.5;
 }
 
 case-indicator {
-    background-color:   transparent;
-    text-color:         @fg-dim;
-    expand:             false;
+    background-color: transparent;
+    text-color:       @fg-dim;
+    expand:           false;
 }
 
-/* ══════════════════════════════════════════════════════════════════════════════
-   LIST VIEW
-   ══════════════════════════════════════════════════════════════════════════════ */
-
 listview {
-    background-color:   transparent;
-    columns:            1;
-    lines:              8;
-    scrollbar:          true;
-    spacing:            4px;
-    cycle:              true;
-    dynamic:            true;
-    layout:             vertical;
-    fixed-height:       false;
+    background-color: transparent;
+    columns:          1;
+    lines:            8;
+    scrollbar:        true;
+    spacing:          4px;
+    cycle:            true;
+    dynamic:          true;
+    layout:           vertical;
+    fixed-height:     false;
 }
 
 scrollbar {
-    background-color:   @bg-alt;
-    border-radius:      100px;
-    handle-color:       @fg-dim;
-    handle-width:       4px;
-    border:             0px;
-    width:              4px;
-    margin:             0 0 0 6px;
+    background-color: @bg-alt;
+    border-radius:    100px;
+    handle-color:     @fg-dim;
+    handle-width:     4px;
+    border:           0px;
+    width:            4px;
+    margin:           0 0 0 6px;
 }
-
-/* ══════════════════════════════════════════════════════════════════════════════
-   ELEMENTS
-   ══════════════════════════════════════════════════════════════════════════════ */
 
 element {
-    background-color:   transparent;
-    border:             1px solid transparent;
-    border-radius:      8px;
-    padding:            8px 10px;
-    spacing:            10px;
-    orientation:        horizontal;
-    cursor:             pointer;
+    background-color: transparent;
+    border:           1px solid transparent;
+    border-radius:    8px;
+    padding:          8px 10px;
+    spacing:          10px;
+    orientation:      horizontal;
+    cursor:           pointer;
 }
 
-/* ── App icon ─────────────────────────────────────────────────────────────── */
 element-icon {
-    background-color:   transparent;
-    size:               32px;
-    cursor:             inherit;
-    vertical-align:     0.5;
+    background-color: transparent;
+    size:             32px;
+    cursor:           inherit;
+    vertical-align:   0.5;
 }
 
-/* ── Window text: "workspace  ·  class  ·  title" ────────────────────────── */
 element-text {
-    background-color:   transparent;
-    text-color:         inherit;
-    cursor:             inherit;
-    vertical-align:     0.5;
-    highlight:          bold @accent;
+    background-color: transparent;
+    text-color:       inherit;
+    cursor:           inherit;
+    vertical-align:   0.5;
+    highlight:        bold @accent;
 }
 
-/* ── Normal (unfocused rows) ──────────────────────────────────────────────── */
-element normal.normal {
-    background-color:   transparent;
-    text-color:         @fg-sub;
-    border-color:       transparent;
-}
-
+element normal.normal,
 element alternate.normal {
-    background-color:   transparent;
-    text-color:         @fg-sub;
-    border-color:       transparent;
+    background-color: transparent;
+    text-color:       @fg-sub;
 }
 
-/* ── Currently focused / active window ───────────────────────────────────── */
 element normal.active,
 element alternate.active {
-    background-color:   @bg-active;
-    border-color:       @border-col;
-    text-color:         @fg;
+    background-color: @bg-active;
+    border-color:     @border-col;
+    text-color:       @fg;
 }
 
-/* ── Urgent windows ───────────────────────────────────────────────────────── */
 element normal.urgent,
 element alternate.urgent {
-    background-color:   rgba(247, 118, 142, 0.10);
-    border-color:       rgba(247, 118, 142, 0.30);
-    text-color:         @red;
+    background-color: rgba(247, 118, 142, 0.10);
+    border-color:     rgba(247, 118, 142, 0.30);
+    text-color:       @red;
 }
 
-/* ── Rofi cursor / keyboard selection ────────────────────────────────────── */
 element selected.normal {
-    background-color:   @bg-active;
-    border-color:       @border-active;
-    text-color:         @accent;
+    background-color: @bg-active;
+    border-color:     @border-hi;
+    text-color:       @accent;
 }
 
 element selected.active {
-    background-color:   rgba(122, 162, 247, 0.22);
-    border-color:       @border-active;
-    text-color:         @accent;
+    background-color: rgba(122, 162, 247, 0.22);
+    border-color:     @border-hi;
+    text-color:       @accent;
 }
 
 element selected.urgent {
-    background-color:   rgba(247, 118, 142, 0.18);
-    border-color:       @red;
-    text-color:         @red;
+    background-color: rgba(247, 118, 142, 0.18);
+    border-color:     @red;
+    text-color:       @red;
 }

@@ -1,33 +1,28 @@
 /* ══════════════════════════════════════════════════════════════════════════════
    HyprFlux — rofi/config.rasi
-   Global Rofi configuration.  Imported by every other .rasi theme file.
-   Do not put colours or layout here — those live in the per-theme files.
+   Global Rofi configuration (Rofi-wayland 1.7+).
+   Imported by every theme file via @import "config.rasi"
    ══════════════════════════════════════════════════════════════════════════════ */
 
 configuration {
-
-    /* ── Modes available when rofi is launched without -show ───────────────── */
     modi:                   "drun,run,window,ssh,filebrowser";
-
-    /* ── Font ──────────────────────────────────────────────────────────────── */
     font:                   "JetBrainsMono Nerd Font 13";
 
-    /* ── Icons ─────────────────────────────────────────────────────────────── */
     show-icons:             true;
     icon-theme:             "Papirus-Dark";
     steal-focus:            false;
 
-    /* ── Terminal (used by ssh mode) ───────────────────────────────────────── */
     terminal:               "kitty";
 
-    /* ── Matching & sorting ────────────────────────────────────────────────── */
+    /* Matching */
     matching:               "fuzzy";
     tokenize:               true;
-    sorting-method:         "fzf";
+    /* sorting-method: normal | levenshtein (NOT "fzf" — that is not a rofi sort method) */
+    sorting-method:         "normal";
     case-sensitive:         false;
     sort:                   true;
 
-    /* ── Behaviour ─────────────────────────────────────────────────────────── */
+    /* Behaviour */
     cycle:                  true;
     hover-select:           false;
     auto-select:            false;
@@ -36,29 +31,24 @@ configuration {
     parse-hosts:            true;
     click-to-exit:          true;
 
-    /* ── drun-specific ─────────────────────────────────────────────────────── */
+    /* drun */
     drun-display-format:    "{name}";
     drun-show-actions:      false;
     drun-url-launcher:      "xdg-open";
 
-    /* ── window-specific ───────────────────────────────────────────────────── */
+    /* window */
     window-format:          "{w}  ·  {c}  ·  {t}";
     window-thumbnail:       false;
 
-    /* ── Mode display labels (shown in sidebar-mode) ───────────────────────── */
+    /* Mode labels */
     display-drun:           "󰣆  Apps";
     display-run:            "  Run";
     display-window:         "󰕰  Windows";
     display-ssh:            "󰣀  SSH";
     display-filebrowser:    "  Files";
-    display-combi:          "  All";
 
-    /* ── Combi mode ────────────────────────────────────────────────────────── */
-    combi-modi:             "drun,run";
-    combi-display-format:   "{mode} {text}";
-
-    /* ── Keybindings ───────────────────────────────────────────────────────── */
-    kb-cancel:              "Escape,Super+Space";
+    /* Keybindings */
+    kb-cancel:              "Escape,Super+space";
     kb-accept-entry:        "Return,KP_Enter";
     kb-remove-char-back:    "BackSpace";
     kb-remove-word-back:    "ctrl+BackSpace";
@@ -78,27 +68,14 @@ configuration {
     kb-page-next:           "Page_Down";
     kb-row-first:           "ctrl+Home";
     kb-row-last:            "ctrl+End";
-    kb-screenshot:          "ctrl+shift+s";
-    kb-toggle-case-sensitivity: "grave,dead_grave";
-    kb-toggle-sort:         "Alt+grave";
     kb-mode-previous:       "shift+Left,ctrl+Tab";
     kb-mode-next:           "shift+Right,ctrl+shift+Tab";
-    kb-select-1:            "";
-    kb-select-2:            "";
-    kb-select-3:            "";
-    kb-select-4:            "";
-    kb-select-5:            "";
-    kb-select-6:            "";
-    kb-select-7:            "";
-    kb-select-8:            "";
-    kb-select-9:            "";
-    kb-select-10:           "";
 
-    /* ── History ───────────────────────────────────────────────────────────── */
+    /* History */
     disable-history:        false;
     max-history-size:       25;
 
-    /* ── File browser mode ─────────────────────────────────────────────────── */
+    /* File browser */
     filebrowser {
         directories-first:  true;
         sorting-method:     "name";

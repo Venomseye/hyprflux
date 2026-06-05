@@ -1,16 +1,15 @@
 #!/usr/bin/env bash
 # ══════════════════════════════════════════════════════════════════════════════
 # HyprFlux — wallpaper.sh
-# Wallpaper manager: pick, apply, cache, extract accent colour.
+# Wallpaper manager using hyprpaper IPC via hyprctl.
 #
 # Usage:
-#   wallpaper.sh menu      Open Rofi wallpaper picker
-#   wallpaper.sh random    Apply a random wallpaper
-#   wallpaper.sh restore   Re-apply the last used wallpaper (called at login)
+#   wallpaper.sh menu        Open Rofi wallpaper picker
+#   wallpaper.sh random      Apply a random wallpaper
+#   wallpaper.sh restore     Re-apply the last used wallpaper (called at login)
 #   wallpaper.sh set <path>  Apply a specific wallpaper directly
 #
-# Dependencies: hyprpaper, rofi-wayland, imagemagick, dunst/libnotify
-# Optional:     swww (for animated transitions)
+# Dependencies: hyprpaper, hyprctl, rofi-wayland, imagemagick, libnotify
 # ══════════════════════════════════════════════════════════════════════════════
 
 set -euo pipefail
@@ -19,181 +18,127 @@ readonly WALLPAPER_DIR="${HOME}/Pictures/Wallpapers"
 readonly CACHE_DIR="${HOME}/.local/share/hyprflux/wallpaper-cache"
 readonly STATE_FILE="${HOME}/.local/share/hyprflux/cache/last-wallpaper"
 readonly HYPRPAPER_CONF="${HOME}/.config/hypr/hyprpaper.conf"
-readonly ACCENT_FILE="${HOME}/.local/share/hyprflux/cache/accent-color"
 
-# Thumbnail dimensions for the Rofi picker
 readonly THUMB_W=300
 readonly THUMB_H=169
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
 notify() {
-    local summary="$1" body="${2:-}"
-    if command -v notify-send &>/dev/null; then
-        notify-send --app-name="HyprFlux" --icon="image-x-generic" "$summary" "$body"
-    fi
+    command -v notify-send &>/dev/null \
+        && notify-send --app-name="HyprFlux" --icon="image-x-generic" "$1" "${2:-}"
 }
 
-die() {
-    echo "wallpaper: error: $*" >&2
-    notify "Wallpaper Error" "$*"
-    exit 1
-}
+die() { echo "wallpaper: error: $*" >&2; notify "Wallpaper Error" "$*"; exit 1; }
 
-# ── Check dependencies ────────────────────────────────────────────────────────
 check_deps() {
-    for cmd in hyprpaper hyprctl; do
-        command -v "$cmd" &>/dev/null || die "$cmd is not installed."
-    done
+    command -v hyprpaper &>/dev/null || die "hyprpaper is not installed"
+    command -v hyprctl   &>/dev/null || die "hyprctl is not installed"
 }
 
-# ── Generate a thumbnail for Rofi icon display ───────────────────────────────
+# ── Generate thumbnail ────────────────────────────────────────────────────────
 generate_thumbnail() {
     local src="$1"
-    local thumb="${CACHE_DIR}/$(basename "$src").thumb.jpg"
+    local thumb="${CACHE_DIR}/$(basename "${src}").thumb.jpg"
+    mkdir -p "$CACHE_DIR"
     if [[ ! -f "$thumb" ]] || [[ "$src" -nt "$thumb" ]]; then
-        mkdir -p "$CACHE_DIR"
         if command -v magick &>/dev/null; then
             magick "$src" -thumbnail "${THUMB_W}x${THUMB_H}^" \
-                   -gravity center -extent "${THUMB_W}x${THUMB_H}" \
-                   -strip -quality 80 "$thumb" 2>/dev/null || true
+                -gravity center -extent "${THUMB_W}x${THUMB_H}" \
+                -strip -quality 80 "$thumb" 2>/dev/null || true
         elif command -v convert &>/dev/null; then
             convert "$src" -thumbnail "${THUMB_W}x${THUMB_H}^" \
-                    -gravity center -extent "${THUMB_W}x${THUMB_H}" \
-                    -strip -quality 80 "$thumb" 2>/dev/null || true
+                -gravity center -extent "${THUMB_W}x${THUMB_H}" \
+                -strip -quality 80 "$thumb" 2>/dev/null || true
         fi
     fi
     printf '%s' "$thumb"
 }
 
-# ── Extract dominant accent colour from an image ─────────────────────────────
-extract_accent() {
-    local image="$1"
-    local color=""
-
-    if command -v magick &>/dev/null; then
-        # Resize to 50x50 and find the most dominant (non-near-black, non-near-white) colour
-        color=$(magick "$image" \
-            -resize 50x50! \
-            -modulate 100,150,100 \
-            +dither -posterize 4 \
-            -format "%c" histogram:info:- 2>/dev/null \
-            | sort -rn \
-            | grep -oP '#[0-9A-Fa-f]{6}' \
-            | while IFS= read -r hex; do
-                # Convert hex to R G B
-                r=$(( 16#${hex:1:2} ))
-                g=$(( 16#${hex:3:2} ))
-                b=$(( 16#${hex:5:2} ))
-                # Skip very dark (<60) or very light (>200) colours
-                if (( r > 60 || g > 60 || b > 60 )) && \
-                   (( r < 200 || g < 200 || b < 200 )); then
-                    printf '%s\n' "$hex"
-                fi
-            done | head -1)
-    fi
-
-    # Fallback to the default accent if extraction failed
-    [[ -z "$color" ]] && color="#7aa2f7"
-
-    printf '%s' "$color"
-    mkdir -p "$(dirname "$ACCENT_FILE")"
-    printf '%s\n' "$color" > "$ACCENT_FILE"
-}
-
-# ── Apply a wallpaper via hyprpaper ──────────────────────────────────────────
+# ── Apply wallpaper via hyprpaper IPC (hyprctl hyprpaper) ─────────────────────
 apply_wallpaper() {
     local wallpaper="$1"
-
     [[ -f "$wallpaper" ]] || die "File not found: $wallpaper"
 
-    # Detect connected monitors
-    local monitors
-    mapfile -t monitors < <(hyprctl monitors -j 2>/dev/null \
-        | python3 -c "
+    # Get connected monitor names from hyprctl
+    local monitors=()
+    if command -v hyprctl &>/dev/null; then
+        while IFS= read -r mon; do
+            [[ -n "$mon" ]] && monitors+=("$mon")
+        done < <(hyprctl monitors -j 2>/dev/null \
+            | python3 -c "
 import json,sys
-data = json.load(sys.stdin)
-for m in data:
-    print(m['name'])
-" 2>/dev/null || echo "")
+try:
+    for m in json.load(sys.stdin):
+        print(m['name'])
+except Exception:
+    pass
+" 2>/dev/null)
+    fi
+    [[ ${#monitors[@]} -eq 0 ]] && monitors=("")
 
-    [[ ${#monitors[@]} -eq 0 ]] && monitors=("DP-1")
+    # Ensure hyprpaper is running
+    if ! pgrep -x hyprpaper &>/dev/null; then
+        hyprpaper &
+        sleep 0.8
+    fi
 
-    # Write hyprpaper.conf
+    # ── Preload the wallpaper into hyprpaper via IPC ──────────────────────────
+    hyprctl hyprpaper preload "$wallpaper" 2>/dev/null \
+        || { sleep 0.5 && hyprctl hyprpaper preload "$wallpaper" 2>/dev/null || true; }
+
+    # ── Set the wallpaper on each monitor ─────────────────────────────────────
+    for mon in "${monitors[@]}"; do
+        hyprctl hyprpaper wallpaper "${mon},${wallpaper}" 2>/dev/null || true
+    done
+
+    # ── Update hyprpaper.conf so it persists across restarts ─────────────────
     {
         printf '# HyprFlux — auto-generated by wallpaper.sh\n'
-        printf '# Do not edit manually.\n\n'
+        printf '# Do not edit manually — use wallpaper.sh or Super+W\n\n'
+        printf 'ipc     = on\n'
+        printf 'splash  = false\n\n'
         printf 'preload = %s\n\n' "$wallpaper"
-        printf 'ipc = on\n\n'
         for mon in "${monitors[@]}"; do
-            [[ -z "$mon" ]] && continue
             printf 'wallpaper = %s,%s\n' "$mon" "$wallpaper"
         done
     } > "$HYPRPAPER_CONF"
 
-    # Apply via IPC if hyprpaper is running; otherwise restart it
-    if hyprctl -j clients 2>/dev/null | grep -q "hyprpaper"; then
-        for mon in "${monitors[@]}"; do
-            [[ -z "$mon" ]] && continue
-            hyprpaper --preload "$wallpaper" 2>/dev/null || true
-            hyprpaper --wallpaper "$mon,$wallpaper" 2>/dev/null || true
-        done
-    else
-        pkill -x hyprpaper 2>/dev/null || true
-        sleep 0.3
-        hyprpaper &
-        sleep 0.5
-    fi
-
-    # Persist selection
+    # ── Cache the selection ────────────────────────────────────────────────────
     mkdir -p "$(dirname "$STATE_FILE")"
     printf '%s\n' "$wallpaper" > "$STATE_FILE"
-
-    # Extract and cache accent colour (non-blocking)
-    extract_accent "$wallpaper" &
 
     notify "Wallpaper Applied" "$(basename "$wallpaper")"
 }
 
-# ── Rofi-based wallpaper picker ───────────────────────────────────────────────
+# ── Rofi wallpaper picker ─────────────────────────────────────────────────────
 open_menu() {
-    [[ -d "$WALLPAPER_DIR" ]] || die "Wallpaper directory not found: $WALLPAPER_DIR"
+    [[ -d "$WALLPAPER_DIR" ]] || die "No wallpapers found. Add images to: ${WALLPAPER_DIR}"
 
-    # Gather supported image files
     local images=()
     while IFS= read -r -d '' f; do
         images+=("$f")
     done < <(find "$WALLPAPER_DIR" -maxdepth 3 \
         \( -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.png' \
-           -o -iname '*.webp' -o -iname '*.gif' \) \
-        -print0 2>/dev/null | sort -z)
+           -o -iname '*.webp' \) -print0 2>/dev/null | sort -z)
 
-    if [[ ${#images[@]} -eq 0 ]]; then
-        notify "No Wallpapers Found" "Add images to: ${WALLPAPER_DIR}"
-        die "No wallpapers found in ${WALLPAPER_DIR}"
-    fi
+    [[ ${#images[@]} -eq 0 ]] && die "No images found in ${WALLPAPER_DIR}"
 
-    # Generate thumbnails in background (show menu immediately)
-    for img in "${images[@]}"; do
-        generate_thumbnail "$img" &>/dev/null &
-    done
+    # Generate thumbnails (background, non-blocking)
+    for img in "${images[@]}"; do generate_thumbnail "$img" &>/dev/null & done
     wait
 
-    # Build Rofi input: "basename\x00icon\x1fthumbnail_path"
-    local rofi_input=""
     local current_wall=""
     [[ -f "$STATE_FILE" ]] && current_wall="$(cat "$STATE_FILE")"
 
+    local rofi_input=""
     for img in "${images[@]}"; do
-        local name
+        local name thumb active=""
         name="$(basename "$img")"
-        local thumb
         thumb="$(generate_thumbnail "$img")"
-        local active=""
-        [[ "$img" == "$current_wall" ]] && active="*  "
+        [[ "$img" == "$current_wall" ]] && active="● "
         rofi_input+="${active}${name}\x00icon\x1f${thumb}\n"
     done
 
-    # Show picker
     local chosen
     chosen=$(printf '%b' "$rofi_input" \
         | rofi -dmenu \
@@ -201,48 +146,39 @@ open_menu() {
                -p "󰸉  Wallpaper" \
                -i \
                -show-icons \
-               -theme-str 'listview { columns: 3; lines: 3; }
-                            element-icon { size: 80px; }
-                            window { width: 800px; }' \
+               -theme-str 'listview{columns:3;lines:3;}
+                            element-icon{size:80px;}
+                            window{width:860px;}' \
                2>/dev/null || true)
 
     [[ -z "$chosen" ]] && exit 0
+    chosen="${chosen#● }"
 
-    # Strip the active marker if present
-    chosen="${chosen#\*  }"
-
-    # Find the full path matching the chosen basename
     local selected=""
     for img in "${images[@]}"; do
-        if [[ "$(basename "$img")" == "$chosen" ]]; then
-            selected="$img"
-            break
-        fi
+        [[ "$(basename "$img")" == "$chosen" ]] && { selected="$img"; break; }
     done
 
-    [[ -z "$selected" ]] && die "Could not resolve path for: $chosen"
+    [[ -z "$selected" ]] && die "Could not resolve: $chosen"
     apply_wallpaper "$selected"
 }
 
 # ── Random wallpaper ──────────────────────────────────────────────────────────
 random_wallpaper() {
-    [[ -d "$WALLPAPER_DIR" ]] || die "Wallpaper directory not found: $WALLPAPER_DIR"
+    [[ -d "$WALLPAPER_DIR" ]] || die "Wallpaper directory not found: ${WALLPAPER_DIR}"
 
     local images=()
     while IFS= read -r -d '' f; do
         images+=("$f")
     done < <(find "$WALLPAPER_DIR" -maxdepth 3 \
-        \( -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.png' \
-           -o -iname '*.webp' \) \
+        \( -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.png' -o -iname '*.webp' \) \
         -print0 2>/dev/null)
 
     [[ ${#images[@]} -eq 0 ]] && die "No wallpapers found in ${WALLPAPER_DIR}"
-
-    local idx=$(( RANDOM % ${#images[@]} ))
-    apply_wallpaper "${images[$idx]}"
+    apply_wallpaper "${images[$(( RANDOM % ${#images[@]} ))]}"
 }
 
-# ── Restore last wallpaper (called from autostart.conf) ──────────────────────
+# ── Restore last wallpaper (autostart) ───────────────────────────────────────
 restore_wallpaper() {
     if [[ -f "$STATE_FILE" ]]; then
         local last
@@ -252,23 +188,17 @@ restore_wallpaper() {
             return 0
         fi
     fi
-
-    # No cached wallpaper — pick a random one
-    if [[ -d "$WALLPAPER_DIR" ]]; then
-        random_wallpaper
-    fi
+    # No cache — pick random if wallpapers exist
+    [[ -d "$WALLPAPER_DIR" ]] && random_wallpaper || true
 }
 
 # ── Entry point ───────────────────────────────────────────────────────────────
 main() {
     check_deps
-
-    local action="${1:-menu}"
-
-    case "$action" in
-        menu)           open_menu ;;
-        random)         random_wallpaper ;;
-        restore)        restore_wallpaper ;;
+    case "${1:-menu}" in
+        menu)    open_menu ;;
+        random)  random_wallpaper ;;
+        restore) restore_wallpaper ;;
         set)
             [[ -z "${2:-}" ]] && die "Usage: wallpaper.sh set <path>"
             apply_wallpaper "$2"

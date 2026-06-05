@@ -2,8 +2,8 @@
     "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/dev/doc/json_schema.json",
 
     "logo": {
-        "type":     "auto",
-        "source":   "arch",
+        "type":   "builtin",
+        "source": "arch",
         "color": {
             "1": "blue",
             "2": "cyan"
@@ -19,8 +19,7 @@
         "separator": "  ",
         "color": {
             "keys":   "blue",
-            "title":  "cyan",
-            "output": "white"
+            "title":  "cyan"
         },
         "keyWidth": 12
     },
@@ -29,79 +28,62 @@
         {
             "type":   "title",
             "color": {
-                "user":     "bold_cyan",
-                "at":       "bold_blue",
-                "host":     "bold_cyan"
+                "user":  "bold_cyan",
+                "at":    "bold_blue",
+                "host":  "bold_cyan"
             }
         },
+        "separator",
         {
-            "type":   "separator",
-            "string": "─"
+            "type":     "os",
+            "key":      "  OS"
         },
         {
-            "type":   "os",
-            "key":    "  OS",
-            "keyColor": "blue"
+            "type":     "kernel",
+            "key":      "  Kernel"
         },
         {
-            "type":   "kernel",
-            "key":    "  Kernel",
-            "keyColor": "blue"
+            "type":     "wm",
+            "key":      "  WM"
         },
         {
-            "type":   "wm",
-            "key":    "  WM",
-            "keyColor": "blue"
+            "type":     "shell",
+            "key":      "  Shell"
         },
         {
-            "type":   "shell",
-            "key":    "  Shell",
-            "keyColor": "blue"
+            "type":     "terminal",
+            "key":      "  Terminal"
         },
         {
-            "type":   "terminal",
-            "key":    "  Terminal",
-            "keyColor": "blue"
-        },
-        {
-            "type":   "cpu",
-            "key":    "󰻠  CPU",
-            "keyColor": "cyan",
+            "type":     "cpu",
+            "key":      "󰻠  CPU",
             "showPeCoreCount": false
         },
         {
-            "type":   "gpu",
-            "key":    "󰍹  GPU",
-            "keyColor": "cyan",
-            "hideType": "integrated"
+            "type":       "gpu",
+            "key":        "󰍹  GPU",
+            "hideType":   "integrated"
         },
         {
             "type":       "memory",
             "key":        "󰍛  Memory",
-            "keyColor":   "cyan",
-            "format":     "{used} / {total} ({percentage}%)"
+            "format":     "{used} / {total} ({percentage:.0}%)"
         },
         {
             "type":       "disk",
             "key":        "󰋊  Disk",
-            "keyColor":   "cyan",
             "folders":    "/",
-            "format":     "{used} / {total} ({percentage}%)"
+            "format":     "{used} / {total} ({percentage:.0}%)"
         },
         {
             "type":       "uptime",
-            "key":        "  Uptime",
-            "keyColor":   "cyan"
+            "key":        "  Uptime"
         },
         {
             "type":       "packages",
-            "key":        "󰏔  Packages",
-            "keyColor":   "cyan"
+            "key":        "󰏔  Packages"
         },
-        {
-            "type":   "separator",
-            "string": "─"
-        },
+        "separator",
         {
             "type":       "colors",
             "paddingLeft": 0,

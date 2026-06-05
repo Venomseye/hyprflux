@@ -1,72 +1,46 @@
 # ══════════════════════════════════════════════════════════════════════════════
 # HyprFlux — fish_prompt.fish
-# Fallback prompt for when Starship is not installed.
-# Starship is the preferred prompt (config.fish initialises it if present).
-# ══════════════════════════════════════════════════════════════════════════════
-# Layout:
-#   ╭─ user@host  ~/path  git:branch  [venv]
-#   ╰─ ❯
+# Fallback prompt — only used when Starship is NOT installed.
 # ══════════════════════════════════════════════════════════════════════════════
 
 function fish_prompt --description "HyprFlux fallback prompt"
-    # Only run this prompt if Starship hasn't taken over
+    # Starship handles prompt when installed (see config.fish)
     if command -v starship &>/dev/null
         return
     end
 
     set -l last_status $status
+    set -l cyan    (set_color --bold cyan)
+    set -l blue    (set_color brblue)
+    set -l white   (set_color --bold white)
+    set -l yellow  (set_color yellow)
+    set -l red     (set_color --bold red)
+    set -l green   (set_color --bold green)
+    set -l dim     (set_color brblack)
+    set -l reset   (set_color normal)
 
-    # ── Colours ───────────────────────────────────────────────────────────────
-    set -l col_user    (set_color --bold brblue)
-    set -l col_host    (set_color cyan)
-    set -l col_dir     (set_color --bold brwhite)
-    set -l col_git     (set_color yellow)
-    set -l col_venv    (set_color magenta)
-    set -l col_ok      (set_color --bold green)
-    set -l col_err     (set_color --bold red)
-    set -l col_dim     (set_color brblack)
-    set -l col_reset   (set_color normal)
-
-    # ── User & host ───────────────────────────────────────────────────────────
-    set -l user_host "$col_user$USER$col_dim@$col_host$hostname"
-
-    # ── Current directory (contract $HOME to ~) ───────────────────────────────
     set -l cwd (string replace --regex "^$HOME" "~" $PWD)
-    set -l dir_part "$col_dir $cwd"
 
-    # ── Git branch ────────────────────────────────────────────────────────────
-    set -l git_part ""
+    set -l git_info ""
     if command -v git &>/dev/null
-        set -l branch (git symbolic-ref --short HEAD 2>/dev/null; or git rev-parse --short HEAD 2>/dev/null)
+        set -l branch (git symbolic-ref --short HEAD 2>/dev/null)
         if test -n "$branch"
             set -l dirty ""
-            if test -n (git status --porcelain 2>/dev/null | head -1)
-                set dirty "$col_err*"
+            if test -n "$(git status --porcelain 2>/dev/null | head -1)"
+                set dirty "$red*"
             end
-            set git_part "  $col_dim on $col_git $branch$dirty"
+            set git_info "  $dim on $yellow $branch$dirty"
         end
     end
 
-    # ── Python virtual env ────────────────────────────────────────────────────
-    set -l venv_part ""
-    if test -n "$VIRTUAL_ENV"
-        set venv_part "  $col_venv($(basename $VIRTUAL_ENV))"
-    end
-
-    # ── Top line ──────────────────────────────────────────────────────────────
-    echo -n "$col_dim╭─ $col_reset"
-    echo -n "$user_host$dir_part$git_part$venv_part"
+    echo -n "$dim╭─ $reset$cyan$USER$dim@$blue"(hostname -s)"$reset $white$cwd$reset$git_info$reset"
     echo ""
-
-    # ── Bottom line (prompt character) ────────────────────────────────────────
-    echo -n "$col_dim╰─ "
+    echo -n "$dim╰─ "
     if test $last_status -eq 0
-        echo -n "$col_ok❯ $col_reset"
+        echo -n "$green❯ $reset"
     else
-        echo -n "$col_err❯ $col_reset"
+        echo -n "$red❯ $reset"
     end
 end
 
-function fish_mode_prompt --description "Suppress vi mode indicator"
-    # We handle this in fish_prompt above if needed
-end
+function fish_mode_prompt; end

@@ -1,363 +1,209 @@
 /* ══════════════════════════════════════════════════════════════════════════════
-   HyprFlux — SwayNC style.css
-   Notification center & notification popup stylesheet.
+   HyprFlux — SwayNC style.css  (swaync 0.10+)
    ══════════════════════════════════════════════════════════════════════════════ */
 
-/* ── Variables ────────────────────────────────────────────────────────────── */
-@define-color bg            rgba(26, 27, 38, 0.95);
-@define-color bg-hover      rgba(36, 40, 59, 0.98);
-@define-color surface       rgba(36, 40, 59, 0.90);
-@define-color surface-alt   rgba(41, 46, 66, 0.90);
-@define-color border        rgba(122, 162, 247, 0.3);
-@define-color accent        #7aa2f7;
-@define-color accent-dim    rgba(122, 162, 247, 0.15);
-@define-color text          #c0caf5;
-@define-color text-dim      #565f89;
-@define-color text-sub      #a9b1d6;
-@define-color red           #f7768e;
-@define-color green         #9ece6a;
-@define-color yellow        #e0af68;
+* {
+    font-family:    "JetBrainsMono Nerd Font", sans-serif;
+    font-size:      13px;
+    transition:     200ms ease;
+}
 
 /* ══════════════════════════════════════════════════════════════════════════════
-   CONTROL CENTER (notification panel)
+   CONTROL CENTER
    ══════════════════════════════════════════════════════════════════════════════ */
 
 .control-center {
-    background-color: @bg;
-    border-radius: 16px;
-    border: 1px solid @border;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
-    padding: 6px;
-    color: @text;
-    font-family: "JetBrainsMono Nerd Font", sans-serif;
+    background:     rgba(26, 27, 38, 0.95);
+    border-radius:  16px;
+    border:         1px solid rgba(122, 162, 247, 0.25);
+    box-shadow:     0 8px 32px rgba(0, 0, 0, 0.6);
+    padding:        6px;
+    color:          #c0caf5;
 }
 
-/* ── Title widget ─────────────────────────────────────────────────────────── */
 .widget-title {
-    background-color: transparent;
-    padding: 12px 16px 8px 16px;
+    background:     transparent;
+    padding:        12px 16px 8px;
 }
 
 .widget-title > label {
-    color: @text;
-    font-size: 14px;
-    font-weight: bold;
+    color:          #c0caf5;
+    font-size:      14px;
+    font-weight:    bold;
 }
 
 .widget-title > button {
-    background-color: @accent-dim;
-    border: 1px solid @border;
-    border-radius: 8px;
-    color: @accent;
-    font-size: 12px;
-    padding: 4px 10px;
-    transition: all 200ms ease;
+    background:     rgba(122, 162, 247, 0.12);
+    border:         1px solid rgba(122, 162, 247, 0.30);
+    border-radius:  8px;
+    color:          #7aa2f7;
+    font-size:      12px;
+    padding:        4px 10px;
 }
 
 .widget-title > button:hover {
-    background-color: @accent;
-    color: rgba(26, 27, 38, 1);
+    background:     #7aa2f7;
+    color:          #1a1b26;
 }
 
-/* ── DND widget ───────────────────────────────────────────────────────────── */
+/* ── DND ─────────────────────────────────────────────────────────────────── */
 .widget-dnd {
-    background-color: @surface;
-    border-radius: 12px;
-    margin: 4px 6px;
-    padding: 10px 16px;
+    background:     rgba(36, 40, 59, 0.90);
+    border-radius:  12px;
+    margin:         4px 6px;
+    padding:        10px 16px;
 }
 
 .widget-dnd > label {
-    color: @text-sub;
-    font-size: 13px;
+    color:          #a9b1d6;
+    font-size:      13px;
 }
 
 .widget-dnd > switch {
-    background-color: @surface-alt;
-    border: 1px solid @border;
-    border-radius: 100px;
+    background:     rgba(41, 46, 66, 0.90);
+    border:         1px solid rgba(122, 162, 247, 0.25);
+    border-radius:  100px;
 }
 
-.widget-dnd > switch:checked {
-    background-color: @accent;
-    border-color: @accent;
+.widget-dnd > switch:checked { background: #7aa2f7; }
+
+.widget-dnd > switch slider {
+    background:     white;
+    border-radius:  100px;
+    min-width:      18px;
+    min-height:     18px;
 }
 
-.widget-dnd > switch > slider {
-    background-color: white;
-    border-radius: 100px;
-    min-width: 18px;
-    min-height: 18px;
-}
-
-/* ── MPRIS widget ─────────────────────────────────────────────────────────── */
+/* ── MPRIS ───────────────────────────────────────────────────────────────── */
 .widget-mpris {
-    background-color: @surface;
-    border-radius: 12px;
-    margin: 4px 6px;
-    padding: 12px;
+    background:     rgba(36, 40, 59, 0.90);
+    border-radius:  12px;
+    margin:         4px 6px;
+    padding:        12px;
 }
 
-.widget-mpris-player {
-    padding: 0;
+.widget-mpris .album-art { border-radius: 8px; }
+
+.widget-mpris .title {
+    color:          #c0caf5;
+    font-size:      13px;
+    font-weight:    bold;
 }
 
-.widget-mpris-album-art {
-    border-radius: 8px;
-}
-
-.widget-mpris-title {
-    color: @text;
-    font-size: 13px;
-    font-weight: bold;
-}
-
-.widget-mpris-subtitle {
-    color: @text-dim;
-    font-size: 11px;
-}
-
-.widget-mpris > button {
-    background-color: transparent;
-    border: none;
-    color: @text-sub;
-    padding: 4px 8px;
-    border-radius: 6px;
-    transition: all 150ms ease;
-}
-
-.widget-mpris > button:hover {
-    background-color: @accent-dim;
-    color: @accent;
-}
-
-/* ── Volume widget ────────────────────────────────────────────────────────── */
-.widget-volume {
-    background-color: @surface;
-    border-radius: 12px;
-    margin: 4px 6px;
-    padding: 10px 16px;
-    color: @text;
-}
-
-.widget-volume > label {
-    font-size: 16px;
-    color: @accent;
-    margin-right: 8px;
-}
-
-.widget-volume scale trough {
-    background-color: @surface-alt;
-    border-radius: 100px;
-    min-height: 6px;
-}
-
-.widget-volume scale trough highlight {
-    background-color: @accent;
-    border-radius: 100px;
-}
-
-.widget-volume scale slider {
-    background-color: @accent;
-    border-radius: 100px;
-    min-width: 16px;
-    min-height: 16px;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.4);
-}
-
-/* ── Backlight widget ─────────────────────────────────────────────────────── */
-.widget-backlight {
-    background-color: @surface;
-    border-radius: 12px;
-    margin: 4px 6px;
-    padding: 10px 16px;
-    color: @text;
-}
-
-.widget-backlight > label {
-    font-size: 16px;
-    color: @yellow;
-    margin-right: 8px;
-}
-
-.widget-backlight scale trough {
-    background-color: @surface-alt;
-    border-radius: 100px;
-    min-height: 6px;
-}
-
-.widget-backlight scale trough highlight {
-    background-color: @yellow;
-    border-radius: 100px;
-}
-
-/* ── Inhibitors widget ────────────────────────────────────────────────────── */
-.widget-inhibitors {
-    background-color: @surface;
-    border-radius: 12px;
-    margin: 4px 6px;
-    padding: 10px 16px;
-}
-
-.widget-inhibitors > label {
-    color: @text-sub;
-    font-size: 12px;
+.widget-mpris .artist {
+    color:          #565f89;
+    font-size:      11px;
 }
 
 /* ══════════════════════════════════════════════════════════════════════════════
-   NOTIFICATION LIST (inside control center)
+   NOTIFICATION LIST
    ══════════════════════════════════════════════════════════════════════════════ */
 
 .notification-row {
-    margin: 4px 6px;
-}
-
-.notification-row:focus,
-.notification-row:hover {
-    background-color: transparent;
+    margin:     4px 6px;
 }
 
 .notification {
-    background-color: @surface;
+    background: rgba(36, 40, 59, 0.90);
     border-radius: 12px;
-    border: 1px solid @border;
-    padding: 12px;
-    margin: 0;
-    transition: background-color 150ms ease;
+    border:     1px solid rgba(122, 162, 247, 0.20);
+    padding:    12px;
+    transition: background 150ms ease;
 }
 
 .notification:hover {
-    background-color: @bg-hover;
+    background: rgba(41, 46, 66, 0.95);
 }
 
-/* Urgency colouring on left border */
 .notification.low {
-    border-left: 3px solid @text-dim;
+    border-left: 3px solid #414868;
 }
 
 .notification.normal {
-    border-left: 3px solid @accent;
+    border-left: 3px solid #7aa2f7;
 }
 
 .notification.critical {
-    border-left: 3px solid @red;
-    background-color: rgba(247, 118, 142, 0.08);
+    border-left:    3px solid #f7768e;
+    background:     rgba(247, 118, 142, 0.08);
 }
 
 .notification-action {
-    background-color: @accent-dim;
-    border: 1px solid @border;
-    border-radius: 8px;
-    color: @accent;
-    font-size: 12px;
-    padding: 4px 10px;
-    margin: 4px 4px 0 0;
-    transition: all 150ms ease;
+    background:     rgba(122, 162, 247, 0.12);
+    border:         1px solid rgba(122, 162, 247, 0.25);
+    border-radius:  8px;
+    color:          #7aa2f7;
+    font-size:      12px;
+    padding:        4px 10px;
+    margin:         4px 4px 0 0;
 }
 
 .notification-action:hover {
-    background-color: @accent;
-    color: rgba(26, 27, 38, 1);
+    background:     #7aa2f7;
+    color:          #1a1b26;
 }
 
 .notification-default-action {
-    background-color: transparent;
-    border-radius: 12px;
-    padding: 0;
-    margin: 0;
-}
-
-.notification-default-action:hover {
-    background-color: @accent-dim;
-}
-
-/* Text inside notifications */
-.notification-content {
-    padding: 0;
+    background:     transparent;
+    border-radius:  12px;
+    padding:        0;
 }
 
 .notification-summary {
-    color: @text;
-    font-size: 13px;
-    font-weight: bold;
+    color:          #c0caf5;
+    font-size:      13px;
+    font-weight:    bold;
 }
 
 .notification-body {
-    color: @text-sub;
-    font-size: 12px;
-    margin-top: 2px;
+    color:          #a9b1d6;
+    font-size:      12px;
+    margin-top:     2px;
 }
 
 .notification-time {
-    color: @text-dim;
-    font-size: 10px;
+    color:          #565f89;
+    font-size:      10px;
 }
 
-/* App icon */
-.notification-app-icon {
-    -gtk-icon-style: regular;
-    border-radius: 8px;
+.close-button {
+    background:     transparent;
+    border:         none;
+    border-radius:  50%;
+    color:          #565f89;
+    padding:        2px;
 }
 
-/* Close button */
-.notification .close-button {
-    background-color: transparent;
-    border: none;
-    border-radius: 50%;
-    color: @text-dim;
-    padding: 2px;
-    transition: all 150ms ease;
-}
-
-.notification .close-button:hover {
-    background-color: @red;
-    color: white;
+.close-button:hover {
+    background:     #f7768e;
+    color:          white;
 }
 
 /* ══════════════════════════════════════════════════════════════════════════════
-   NOTIFICATION POPUPS (floating, top-right)
+   FLOATING NOTIFICATIONS
    ══════════════════════════════════════════════════════════════════════════════ */
 
 .floating-notifications {
-    background-color: transparent;
+    background:     transparent;
 }
 
-.floating-notifications .notification-row .notification {
-    background-color: @bg;
-    border: 1px solid @border;
-    border-radius: 12px;
-    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.5);
-    padding: 14px 16px;
-    margin: 6px;
+.floating-notifications .notification {
+    background:     rgba(26, 27, 38, 0.97);
+    border:         1px solid rgba(122, 162, 247, 0.25);
+    border-radius:  12px;
+    box-shadow:     0 6px 24px rgba(0, 0, 0, 0.5);
+    padding:        14px 16px;
+    margin:         6px;
 }
 
-.floating-notifications .notification-row .notification.critical {
-    border-color: @red;
-    box-shadow: 0 6px 24px rgba(247, 118, 142, 0.3);
+.floating-notifications .notification.critical {
+    border-color:   #f7768e;
+    box-shadow:     0 6px 24px rgba(247, 118, 142, 0.30);
 }
 
 /* ── Scrollbar ────────────────────────────────────────────────────────────── */
-scrollbar {
-    background-color: transparent;
-    min-width: 4px;
-}
+scrollbar { background: transparent; min-width: 4px; }
+scrollbar slider { background: #565f89; border-radius: 100px; min-width: 4px; }
+scrollbar slider:hover { background: #7aa2f7; }
 
-scrollbar slider {
-    background-color: @text-dim;
-    border-radius: 100px;
-    min-width: 4px;
-}
-
-scrollbar slider:hover {
-    background-color: @accent;
-}
-
-/* ── Empty state ──────────────────────────────────────────────────────────── */
-.control-center-placeholder {
-    color: @text-dim;
-    font-size: 14px;
-}
-
-.control-center-placeholder image {
-    -gtk-icon-effect: dim;
-}
+.control-center-placeholder { color: #565f89; font-size: 14px; }

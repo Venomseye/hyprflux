@@ -139,7 +139,7 @@ start_recording() {
         die "wf-recorder failed to start"
     fi
 
-    notify "Recording" "Press Super+Shift+R to stop" "media-record"
+    notify "Recording" "Press Super+Alt+R to stop" "media-record"
 }
 
 # ── Status ────────────────────────────────────────────────────────────────────

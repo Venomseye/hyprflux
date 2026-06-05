@@ -1,100 +1,95 @@
 /* ══════════════════════════════════════════════════════════════════════════════
    HyprFlux — wlogout/style.css
-   Power / session logout screen stylesheet.
+   Text + Nerd Font glyph buttons — no external image files required.
    ══════════════════════════════════════════════════════════════════════════════ */
 
-/* ── Window background ────────────────────────────────────────────────────── */
-window {
-    background-color: rgba(26, 27, 38, 0.85);
-    font-family: "JetBrainsMono Nerd Font", sans-serif;
+* {
+    background-image: none;
+    box-shadow:       none;
 }
 
-/* ── Button container ─────────────────────────────────────────────────────── */
+window {
+    background-color: rgba(26, 27, 38, 0.88);
+    color:            #c0caf5;
+    font-family:      "JetBrainsMono Nerd Font", sans-serif;
+}
+
 button {
-    background-color: rgba(36, 40, 59, 0.60);
-    border: 2px solid rgba(122, 162, 247, 0.20);
-    border-radius: 16px;
-    color: #c0caf5;
-    font-size: 14px;
-    font-weight: 500;
-
-    background-repeat: no-repeat;
-    background-position: center 30%;
-    background-size: 56px;
-
-    margin: 12px;
-    padding-top: 90px;
+    background-color: rgba(36, 40, 59, 0.65);
+    border:           2px solid rgba(122, 162, 247, 0.20);
+    border-radius:    16px;
+    color:            #a9b1d6;
+    font-size:        13px;
+    font-weight:      500;
+    margin:           10px;
+    padding:          60px 20px 20px;
 
     transition:
         background-color 200ms ease,
         border-color     200ms ease,
         color            200ms ease,
-        transform        150ms ease,
-        box-shadow       200ms ease;
+        transform        150ms ease;
 }
 
 button:focus,
-button:active,
 button:hover {
-    background-color: rgba(122, 162, 247, 0.15);
-    border-color:     rgba(122, 162, 247, 0.70);
-    color:            #7aa2f7;
-    transform:        scale(1.04);
-    box-shadow:       0 8px 32px rgba(122, 162, 247, 0.25);
     outline:          none;
+    transform:        scale(1.05);
 }
 
-/* ── Per-button icons (Nerd Font symbols in CSS background) ───────────────── */
+/* ── Lock ──────────────────────────────────────────────────────────────────── */
 #lock {
-    background-image: url("~/.config/wlogout/icons/lock.png");
+    background-image: none;
 }
+#lock:focus,
 #lock:hover {
-    background-image: url("~/.config/wlogout/icons/lock.png");
-    border-color: rgba(122, 162, 247, 0.80);
-    color: #7aa2f7;
+    background-color: rgba(122, 162, 247, 0.18);
+    border-color:     #7aa2f7;
+    color:            #7aa2f7;
+    box-shadow:       0 0 20px rgba(122, 162, 247, 0.25);
 }
 
-#logout {
-    background-image: url("~/.config/wlogout/icons/logout.png");
-}
+/* ── Logout ────────────────────────────────────────────────────────────────── */
+#logout:focus,
 #logout:hover {
-    border-color: rgba(224, 175, 104, 0.80);
-    background-color: rgba(224, 175, 104, 0.15);
-    color: #e0af68;
+    background-color: rgba(224, 175, 104, 0.18);
+    border-color:     #e0af68;
+    color:            #e0af68;
+    box-shadow:       0 0 20px rgba(224, 175, 104, 0.25);
 }
 
-#suspend {
-    background-image: url("~/.config/wlogout/icons/suspend.png");
-}
+/* ── Suspend ───────────────────────────────────────────────────────────────── */
+#suspend:focus,
 #suspend:hover {
-    border-color: rgba(115, 218, 202, 0.80);
-    background-color: rgba(115, 218, 202, 0.15);
-    color: #73daca;
+    background-color: rgba(115, 218, 202, 0.18);
+    border-color:     #73daca;
+    color:            #73daca;
+    box-shadow:       0 0 20px rgba(115, 218, 202, 0.25);
 }
 
-#hibernate {
-    background-image: url("~/.config/wlogout/icons/hibernate.png");
-}
+/* ── Hibernate ─────────────────────────────────────────────────────────────── */
+#hibernate:focus,
 #hibernate:hover {
-    border-color: rgba(187, 154, 247, 0.80);
-    background-color: rgba(187, 154, 247, 0.15);
-    color: #bb9af7;
+    background-color: rgba(187, 154, 247, 0.18);
+    border-color:     #bb9af7;
+    color:            #bb9af7;
+    box-shadow:       0 0 20px rgba(187, 154, 247, 0.25);
 }
 
-#reboot {
-    background-image: url("~/.config/wlogout/icons/reboot.png");
-}
+/* ── Reboot ────────────────────────────────────────────────────────────────── */
+#reboot:focus,
 #reboot:hover {
-    border-color: rgba(224, 175, 104, 0.80);
-    background-color: rgba(224, 175, 104, 0.15);
-    color: #e0af68;
+    background-color: rgba(224, 175, 104, 0.18);
+    border-color:     #e0af68;
+    color:            #e0af68;
+    box-shadow:       0 0 20px rgba(224, 175, 104, 0.25);
 }
 
-#shutdown {
-    background-image: url("~/.config/wlogout/icons/shutdown.png");
-}
+/* ── Shutdown ──────────────────────────────────────────────────────────────── */
+#shutdown:focus,
 #shutdown:hover {
-    border-color: rgba(247, 118, 142, 0.80);
-    background-color: rgba(247, 118, 142, 0.15);
-    color: #f7768e;
+    background-color: rgba(247, 118, 142, 0.18);
+    border-color:     #f7768e;
+    color:            #f7768e;
+    box-shadow:       0 0 20px rgba(247, 118, 142, 0.25);
 }
