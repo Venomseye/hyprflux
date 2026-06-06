@@ -12,7 +12,7 @@ Complete list of all keyboard and mouse bindings.
 | `Super + Return` | Open terminal (kitty) |
 | `Super + Space` | App launcher (Rofi drun) |
 | `Super + R` | Run command (Rofi run) |
-| `Super + E` | File manager (Thunar) |
+| `Super + E` | File manager (Nautilus) |
 | `Super + B` | Browser |
 | `Super + Q` | Close focused window |
 | `Super + Shift + Q` | Force kill focused window |

@@ -168,7 +168,7 @@ element-text {
     text-color:       inherit;
     cursor:           inherit;
     vertical-align:   0.5;
-    highlight:        bold @accent;
+    highlight:        bold;
 }
 
 element normal.normal,

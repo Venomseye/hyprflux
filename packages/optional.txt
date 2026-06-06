@@ -9,6 +9,9 @@
 
 
 # ── File manager ───────────────────────────────────────────────────
+nautilus                   # GTK4 file manager (GNOME Files)
+gvfs                      # Virtual filesystem for nautilus (MTP, SMB, trash)
+gvfs-mtp                  # MTP device support (Android phones)
 thunar                    # GTK file manager
 gvfs                      # Virtual filesystem support (USB, MTP, SMB…)
 gvfs-mtp                  # MTP device support (Android phones)
