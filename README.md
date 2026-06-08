@@ -73,7 +73,7 @@ Designed to be **modular**, **maintainable**, and **beautiful** out of the box, 
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/yourusername/hyprflux.git
+git clone https://github.com/Venomseye/hyprflux.git
 cd hyprflux
 
 # 2. Make the installer executable (should already be)
