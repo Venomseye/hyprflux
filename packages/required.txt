@@ -84,12 +84,14 @@ cliphist
 polkit
 polkit-gnome
 
+# ── File manager
+thunar                      # GTK file manager
+gvfs                        # Virtual filesystem support
+gvfs-mtp                    # MTP device support
+
 # ── XDG & desktop integration ──────────────────────────────────────
 xdg-user-dirs
 xdg-utils
-nautilus                   # Default file manager
-gvfs                      # Nautilus virtual filesystem support
-gvfs-mtp                  # MTP device support
 
 # ── System utilities (used by HyprFlux scripts) ────────────────────
 imagemagick
@@ -133,4 +135,3 @@ ttf-nerd-fonts-symbols-mono
 swaynotificationcenter    # [AUR] swaync: notification daemon + center
 wlogout                   # [AUR] graphical session logout / power screen
 bibata-cursor-theme       # [AUR] modern, crisp cursor theme
-adw-gtk3                   # [AUR] Modern libadwaita GTK3 theme

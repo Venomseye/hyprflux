@@ -20,7 +20,8 @@
 
 window {
     background-color: @bg;
-    border:           2px solid @border-col;
+    border: 2px;
+    border-color: @border-col;
     border-radius:    20px;
     width:            480px;
     location:         center;
@@ -69,7 +70,8 @@ listview {
 
 element {
     background-color: @bg-alt;
-    border:           1px solid @border-col;
+    border: 1px;
+    border-color: @border-col;
     border-radius:    14px;
     padding:          18px 10px 14px;
     spacing:          0px;

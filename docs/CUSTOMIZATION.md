@@ -138,7 +138,7 @@ Edit `~/.config/hypr/keybinds.conf`.
 
 ```ini
 # Open your file manager with Super+E (already set)
-bind = SUPER, E, exec, nautilus
+bind = SUPER, E, exec, thunar
 
 # Launch a specific app
 bind = SUPER CTRL, B, exec, blueman-manager
@@ -165,7 +165,7 @@ Edit the variables at the top of `~/.config/hypr/keybinds.conf`:
 ```ini
 $terminal   = kitty
 $launcher   = rofi -show drun -config ~/.config/rofi/launcher.rasi
-$filesrv    = nautilus
+$filesrv    = thunar
 $browser    = firefox
 $editor     = kitty -e nvim
 ```

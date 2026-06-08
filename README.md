@@ -460,7 +460,7 @@ Edit `~/.config/hypr/keybinds.conf` — the `$terminal`, `$browser`, `$filesrv`,
 ```ini
 $terminal   = kitty
 $browser    = firefox
-$filesrv    = nautilus
+$filesrv    = thunar
 $editor     = kitty -e nvim
 ```
 
@@ -717,7 +717,7 @@ Hyprland, xdg-desktop-portal-hyprland, xdg-desktop-portal-gtk, wayland-protocols
 
 ### Optional (32 packages)
 
-Nautilus + plugins, neovim, code, imv, mpv, vlc, zathura, firefox, chromium, libreoffice, thunderbird, btop, nvtop, git, docker, swww (AUR), vesktop (AUR), extra fonts.
+Thunar + plugins, neovim, code, imv, mpv, vlc, zathura, firefox, chromium, libreoffice, thunderbird, btop, nvtop, git, docker, swww (AUR), vesktop (AUR), extra fonts.
 
 ---
 

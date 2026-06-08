@@ -77,7 +77,7 @@
             "(.*) — Mozilla Firefox":    "󰈹  Firefox",
             "(.*) - Chromium":           "  Chromium",
             "(.*) - Visual Studio Code": "  Code",
-            "(.*)nautilus":              "  Files",
+            "(.*)thunar":              "  Files",
             "(.*)kitty":                 "  Terminal",
             "(.*)nvim":                  "  Neovim"
         }

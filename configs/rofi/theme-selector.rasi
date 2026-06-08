@@ -22,7 +22,8 @@
 
 window {
     background-color: @bg;
-    border:           2px solid @border-col;
+    border: 2px;
+    border-color: @border-col;
     border-radius:    16px;
     width:            420px;
     location:         center;
@@ -40,7 +41,8 @@ mainbox {
 
 inputbar {
     background-color: @bg-alt;
-    border:           1px solid @border-col;
+    border: 1px;
+    border-color: @border-col;
     border-radius:    10px;
     padding:          10px 14px;
     spacing:          8px;
@@ -149,7 +151,8 @@ message { background-color: transparent; padding: 4px 0 0; border: none; }
 
 textbox {
     background-color: @bg-alt;
-    border:           1px solid @border-col;
+    border: 1px;
+    border-color: @border-col;
     border-radius:    8px;
     text-color:       @fg-dim;
     padding:          8px 12px;
